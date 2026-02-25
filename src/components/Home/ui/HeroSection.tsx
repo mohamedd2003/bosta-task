@@ -1,39 +1,61 @@
 import Link from "next/link"
+import { ArrowRight, Sparkles, TrendingUp } from "lucide-react"
 
 export function HeroSection() {
     return (
-        <section className="relative overflow-hidden border-b border-zinc-200/60 bg-white dark:border-zinc-800/60 dark:bg-zinc-950">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-red-50 via-transparent to-transparent opacity-60 dark:from-red-950/20" />
-            <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-                <div className="max-w-2xl">
-                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-xs font-medium text-primary dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-400">
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                        New arrivals every week
-                    </div>
-                    <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl dark:text-zinc-50">
-                        Discover Premium{" "}
-                        <span className="bg-linear-to-r from-primary to-red-400 bg-clip-text text-transparent dark:from-red-400 dark:to-red-300">
-                            Products
-                        </span>
-                    </h1>
-                    <p className="mt-5 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                        Explore our handpicked collection of top-quality products. From
-                        electronics to fashion — find exactly what you need.
-                    </p>
-                    <div className="mt-8 flex flex-wrap gap-3">
-                        <Link
-                            href="#products"
-                            className="bg-primary hover:bg-primary/90 inline-flex h-11 items-center justify-center rounded-xl px-6 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md"
-                        >
-                            Browse All Products
-                        </Link>
-                        <Link
-                            href="#products"
-                            className="inline-flex h-11 items-center justify-center rounded-xl border border-zinc-200 bg-white px-6 text-sm font-medium text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
-                        >
-                            View Featured ↓
-                        </Link>
-                    </div>
+        <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-white px-4 py-20 dark:bg-zinc-950">
+            {/* ── Background Elements ── */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -left-[10%] -top-[10%] h-[500px] w-[500px] rounded-full bg-red-500/5 blur-[120px] dark:bg-red-500/10" />
+                <div className="absolute -right-[10%] -bottom-[10%] h-[500px] w-[500px] rounded-full bg-red-500/5 blur-[120px] dark:bg-red-500/10" />
+                <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/[0.02] blur-[150px]" />
+            </div>
+
+            <div className="relative mx-auto max-w-5xl text-center">
+                {/* ── Badge ── */}
+                <div className="mb-8 inline-flex animate-bounce-subtle items-center gap-2 rounded-full border border-red-100 bg-red-50/50 px-4 py-1.5 text-[13px] font-bold text-primary backdrop-blur-sm dark:border-red-900/30 dark:bg-red-950/20">
+                    <TrendingUp className="h-4 w-4" />
+                    <span>New Winter Collection 2026 is Live</span>
+                </div>
+
+                {/* ── Main Heading ── */}
+                <h1 className="mb-6 text-5xl font-[900] leading-[1.1] tracking-tight text-zinc-900 sm:text-7xl lg:text-8xl dark:text-zinc-50">
+                    Elevate Your <br />
+                    <span className="bg-gradient-to-r from-primary via-red-500 to-amber-500 bg-clip-text text-transparent">
+                        Digital Lifestyle.
+                    </span>
+                </h1>
+
+                {/* ── Subheading ── */}
+                <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl dark:text-zinc-400">
+                    Discover a curated selection of premium electronics and lifestyle essentials.
+                    Simplified shopping, lightning-fast delivery, and world-class quality.
+                </p>
+
+                {/* ── Call to Actions ── */}
+                <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                    <Link
+                        href="#products"
+                        className="group bg-primary hover:bg-primary/95 flex h-14 items-center gap-2 rounded-2xl px-10 text-base font-bold text-white shadow-2xl shadow-red-500/30 transition-all hover:-translate-y-1 active:scale-95"
+                    >
+                        <span>Start Exploring</span>
+                        <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                 </Link>
+                </div>
+
+                {/* ── Quick Stats ── */}
+                <div className="mt-20 grid grid-cols-2 gap-8 border-t border-zinc-100 pt-12 md:grid-cols-4 dark:border-zinc-900">
+                    {[
+                        { label: "Premium Brands", value: "50+" },
+                        { label: "Happy Customers", value: "10K+" },
+                        { label: "Order Fulfilled", value: "25K+" },
+                        { label: "Quality Support", value: "24/7" },
+                    ].map((stat) => (
+                        <div key={stat.label} className="text-center">
+                            <div className="text-2xl font-black text-zinc-900 dark:text-zinc-50">{stat.value}</div>
+                            <div className="text-xs font-bold uppercase tracking-widest text-zinc-400">{stat.label}</div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

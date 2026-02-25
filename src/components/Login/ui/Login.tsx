@@ -25,7 +25,7 @@ import { toast } from "react-hot-toast"
 import { useState } from "react"
 import { AxiosError } from "axios"
 import { useRouter } from "next/navigation"
-
+import cookies from "js-cookie"
 export function LoginForm({
   className,
   ...props
@@ -43,11 +43,12 @@ export function LoginForm({
   const onSubmit = async (data: LoginFormValues) => {
     setLoading(true)
     try {
-      const res = await loginAsAdmin(data)
-      console.log("ress", res)
-      if (res) {
+      const { data: { token } } = await loginAsAdmin(data)
+      cookies.set("token", token)
+      cookies.set("userName", data.username)
+      if (token) {
         toast.success("Login successful!")
-        router.replace("/")
+        window.location.replace("/")
       }
     } catch (error: any) {
       toast.error("Username or password is incorrect")

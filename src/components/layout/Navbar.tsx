@@ -4,63 +4,174 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useCartStore } from "@/store/useCartStore"
+import { ShoppingBag, Search, Menu, X, User, LogOut } from "lucide-react"
+import cookies from "js-cookie"
 
 const navLinks = [
     { href: "/", label: "Home" },
     { href: "/products", label: "Products" },
 ]
 
-
 export default function Navbar() {
     const pathname = usePathname()
     const [mobileOpen, setMobileOpen] = useState(false)
-    const [isCartOpen, setIsCartOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
     const [mounted, setMounted] = useState(false)
+    const [userName, setUserName] = useState<string | null>(null)
     const { getTotalItems } = useCartStore()
 
-    // Hydration fix for persisted stores
     useEffect(() => {
         setMounted(true)
-    }, [])
+        const checkAuth = () => {
+            const token = cookies.get("token")
+            if (token) {
+                setUserName(cookies.get("userName") || "User")
+            } else {
+                setUserName(null)
+            }
+        }
+        checkAuth()
+
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20)
+        }
+        window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [pathname])
+
+    const handleLogout = () => {
+        cookies.remove("token")
+        cookies.remove("userName")
+        setUserName(null)
+        window.location.reload()
+    }
 
     const cartCount = mounted ? getTotalItems() : 0
 
     return (
-        <nav className="sticky top-0 z-50 border-b border-zinc-200/60 bg-white/80 backdrop-blur-xl dark:border-zinc-800/60 dark:bg-zinc-950/80">
-            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <nav
+            className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
+                ? "bg-white/80 py-2 backdrop-blur-xl shadow-sm dark:bg-zinc-950/80"
+                : "bg-white py-4 dark:bg-zinc-950"
+                }`}
+        >
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* ── Logo ── */}
                 <Link
                     href="/"
-                    className="flex items-center gap-1 text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
+                    className="group flex items-center gap-2 text-2xl font-black tracking-tighter transition-transform hover:scale-105 active:scale-95"
                 >
-                    <svg className="h-8 w-8" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="8" className="fill-primary" />
-                        <path
-                            d="M10 9h5.5a4 4 0 010 8H10V9z"
-                            fill="white"
-                            fillOpacity="0.9"
-                        />
-                        <path
-                            d="M10 17h6.5a4 4 0 010 8H10v-8z"
-                            fill="white"
-                        />
-                    </svg>
-                    <span>
-                        <span className="text-primary">OSTA</span>
+                    <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-xl shadow-lg shadow-red-500/20 transition-all group-hover:rotate-12">
+                        <span className="text-xl font-bold text-white">B</span>
+                    </div>
+                    <span className="text-zinc-900 dark:text-zinc-50">
+                        OSTA
                     </span>
                 </Link>
 
                 {/* ── Desktop Links ── */}
-                <div className="hidden items-center gap-1 md:flex">
+                <div className="hidden items-center gap-2 md:flex">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href
                         return (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive
+                                className={`relative px-4 py-2 text-sm font-semibold transition-all hover:text-primary ${isActive
                                     ? "text-primary"
-                                    : "text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-primary"
+                                    : "text-zinc-500 dark:text-zinc-400"
+                                    }`}
+                            >
+                                {link.label}
+                                {isActive && (
+                                    <span className="absolute bottom-0 left-4 right-4 h-0.5 rounded-full bg-primary" />
+                                )}
+                            </Link>
+                        )
+                    })}
+                </div>
+
+                {/* ── Actions ── */}
+                <div className="flex items-center gap-2 sm:gap-4">
+                    <button
+                        className="flex h-10 w-10 items-center justify-center rounded-full text-zinc-500 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+                        aria-label="Search"
+                    >
+                        <Search className="h-5 w-5" />
+                    </button>
+
+                    <Link
+                        href="/products"
+                        className="group relative flex h-10 items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 text-sm font-bold text-zinc-700 shadow-xs transition-all hover:border-primary hover:text-primary dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300"
+                    >
+                        <div className="relative">
+                            <ShoppingBag className="h-4.5 w-4.5 transition-transform group-hover:-rotate-12" />
+                            {cartCount > 0 && (
+                                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[8px] font-black text-white ring-2 ring-white dark:ring-zinc-950">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </div>
+                        <span className="hidden sm:inline">Cart</span>
+                    </Link>
+
+                    {mounted && (
+                        userName ? (
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 rounded-full border border-zinc-100 bg-zinc-50/50 py-1 pl-1 pr-3 dark:border-zinc-800 dark:bg-zinc-900">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-bold">
+                                        {userName.charAt(0).toUpperCase()}
+                                    </div>
+                                    <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300 max-w-[100px] truncate">
+                                        {userName}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex h-10 w-10 items-center justify-center rounded-full text-zinc-400 hover:bg-zinc-100 hover:text-red-500 transition-all dark:hover:bg-zinc-900"
+                                    title="Logout"
+                                >
+                                    <LogOut className="h-5 w-5" />
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className="bg-primary hover:bg-primary/95 flex h-10 items-center gap-2 rounded-full px-5 text-sm font-bold text-white shadow-lg shadow-red-500/25 transition-all hover:-translate-y-0.5 active:translate-y-0"
+                            >
+                                <User className="h-4 w-4" />
+                                <span>Login</span>
+                            </Link>
+                        )
+                    )}
+
+                    {/* ── Mobile Hamburger ── */}
+                    <button
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-zinc-600 transition-all hover:bg-zinc-100 md:hidden dark:bg-zinc-900 dark:text-zinc-400"
+                        aria-label="Toggle menu"
+                    >
+                        {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                    </button>
+                </div>
+            </div>
+
+            {/* ── Mobile Menu ── */}
+            <div
+                className={`overflow-hidden transition-all duration-300 md:hidden ${mobileOpen ? "max-h-64 border-t border-zinc-100 dark:border-zinc-800" : "max-h-0"
+                    }`}
+            >
+                <div className="flex flex-col gap-1 p-4">
+                    {navLinks.map((link) => {
+                        const isActive = pathname === link.href
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                onClick={() => setMobileOpen(false)}
+                                className={`flex items-center rounded-xl px-4 py-3 text-sm font-bold transition-all ${isActive
+                                    ? "bg-primary/5 text-primary"
+                                    : "text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-900"
                                     }`}
                             >
                                 {link.label}
@@ -68,80 +179,7 @@ export default function Navbar() {
                         )
                     })}
                 </div>
-
-                {/* ── Right side ── */}
-                <div className="hidden items-center gap-3 md:flex">
-                    <button
-                        className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-                        aria-label="Search"
-                    >
-                        <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
-                    </button>
-                    {/* Cart Tooltip/Button */}
-                    <button
-                        onClick={() => setIsCartOpen(true)}
-                        className="relative flex h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
-                        aria-label="Cart"
-                    >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-5.98.572m5.98-.572h9m-9 0a3 3 0 01-5.98.572M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM15.75 14.25l2.394-8.978M15.75 14.25H7.5m8.25 0a3 3 0 105.98.572m-5.98-.572a3 3 0 005.98.572" />
-                        </svg>
-                        My Cart
-                        <span className="bg-primary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white transition-all scale-100 group-active:scale-110">
-                            {cartCount}
-                        </span>
-                    </button>
-                    <Link
-                        href="/login"
-                        className="bg-primary hover:bg-primary/90 inline-flex h-9 items-center justify-center rounded-full px-5 text-sm font-medium text-white shadow-sm transition-all"
-                    >
-                      Login
-                    </Link>
-                </div>
-
-                {/* ── Mobile Hamburger ── */}
-                <button
-                    onClick={() => setMobileOpen(!mobileOpen)}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 hover:bg-zinc-100 md:hidden dark:text-zinc-400 dark:hover:bg-zinc-800"
-                    aria-label="Toggle menu"
-                >
-                    {mobileOpen ? (
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    ) : (
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                    )}
-                </button>
             </div>
-
-            {/* ── Mobile Menu ── */}
-            {mobileOpen && (
-                <div className="border-t border-zinc-200/60 bg-white px-4 pb-4 pt-2 md:hidden dark:border-zinc-800/60 dark:bg-zinc-950">
-                    <div className="flex flex-col gap-1">
-                        {navLinks.map((link) => {
-                            const isActive = pathname === link.href
-                            return (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    onClick={() => setMobileOpen(false)}
-                                    className={`rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive
-                                        ? "text-primary bg-red-50 dark:bg-red-950/20"
-                                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-50"
-                                        }`}
-                                >
-                                    {link.label}
-                                </Link>
-                            )
-                        })}
-                    </div>
-                </div>
-            )}
         </nav>
     )
 }

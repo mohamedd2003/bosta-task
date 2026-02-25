@@ -2,17 +2,19 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import useSWR from "swr"
-import { getAllProducts } from "../services/ProductCard.service"
-import { ProductCard } from "../types/ProductCard.types"
+import useSWR, { useSWRConfig } from "swr"
+import { getAllProducts, addProduct } from "../services/ProductCard.service"
+import { ProductCard, ProductDto } from "../types/ProductCard.types"
+import { toast } from "react-hot-toast"
 
 export type SortOption = "default" | "price-asc" | "price-desc" | "category"
 
 const PRODUCTS_PER_PAGE = 10
 
 export function useProductCard() {
+    const { mutate: globalMutate } = useSWRConfig()
     // ---------- Data fetching ----------
-    const { data: products, error, isLoading } = useSWR<ProductCard[]>(
+    const { data: products, error, isLoading, mutate: localMutate } = useSWR<ProductCard[]>(
         "products",
         getAllProducts
     )
@@ -105,6 +107,17 @@ export function useProductCard() {
         [totalPages]
     )
 
+    const handleAddProduct = useCallback(async (product: ProductDto) => {
+        try {
+            await addProduct(product)
+            toast.success("Product added successfully!")
+            localMutate() // Revalidate local products
+        } catch (error) {
+            toast.error("Failed to add product")
+            throw error
+        }
+    }, [localMutate])
+
     return {
         // Data
         products: paginatedProducts,
@@ -129,5 +142,8 @@ export function useProductCard() {
         totalPages,
         goToPage,
         productsPerPage: PRODUCTS_PER_PAGE,
+
+        // Mutations
+        handleAddProduct,
     }
 }
