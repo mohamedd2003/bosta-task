@@ -61,11 +61,9 @@ export default function Navbar() {
                     href="/"
                     className="group flex items-center gap-2 text-2xl font-black tracking-tighter transition-transform hover:scale-105 active:scale-95"
                 >
-                    <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-xl shadow-lg shadow-red-500/20 transition-all group-hover:rotate-12">
-                        <span className="text-xl font-bold text-white">B</span>
-                    </div>
-                    <span className="text-zinc-900 dark:text-zinc-50">
-                        OSTA
+
+                    <span className="text-primary dark:text-zinc-50">
+                        Bosta
                     </span>
                 </Link>
 

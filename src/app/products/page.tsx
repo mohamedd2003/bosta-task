@@ -1,3 +1,4 @@
+import { ProductsHeader } from "@/components/Products/ProductsHeader"
 import { ProductListingClient } from "@/components/Home/ui/ProductListingClient"
 import { Suspense } from "react"
 
@@ -10,19 +11,7 @@ export default function ProductsPage() {
     return (
         <div className="bg-zinc-50/50 dark:bg-zinc-950 min-h-screen pt-8">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <nav className="flex items-center gap-2 text-sm text-zinc-500">
-                        <a href="/" className="hover:text-primary transition-colors">Home</a>
-                        <span className="text-zinc-300">/</span>
-                        <span className="font-medium text-zinc-900 dark:text-zinc-50">Products</span>
-                    </nav>
-                    <a
-                        href="/products/add"
-                        className="bg-primary flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-red-500/25 transition-all hover:-translate-y-0.5"
-                    >
-                        <span>Add Product</span>
-                    </a>
-                </div>
+                <ProductsHeader />
             </div>
 
             <Suspense fallback={
