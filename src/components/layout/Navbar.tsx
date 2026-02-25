@@ -10,7 +10,6 @@ const navLinks = [
     { href: "/products", label: "Products" },
 ]
 
-import { CartDrawer } from "./CartDrawer"
 
 export default function Navbar() {
     const pathname = usePathname()
@@ -95,10 +94,10 @@ export default function Navbar() {
                         </span>
                     </button>
                     <Link
-                        href="#"
+                        href="/login"
                         className="bg-primary hover:bg-primary/90 inline-flex h-9 items-center justify-center rounded-full px-5 text-sm font-medium text-white shadow-sm transition-all"
                     >
-                        Sign Up
+                      Login
                     </Link>
                 </div>
 
@@ -143,7 +142,6 @@ export default function Navbar() {
                     </div>
                 </div>
             )}
-            <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </nav>
     )
 }

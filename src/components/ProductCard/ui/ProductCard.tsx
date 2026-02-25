@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { ProductCard as ProductCardType } from "../types/ProductCard.types"
+import Image from "next/image"
 
 // ── Dynamic category color: hash-based, no static data ──
 const colorPalette = [
@@ -45,11 +46,13 @@ export function ProductCard({ product }: ProductCardProps) {
         href={`/products/${product.id}`}
         className="relative flex aspect-4/3 items-center justify-center overflow-hidden bg-zinc-50 p-6 dark:bg-zinc-900"
       >
-        <img
+        <Image
           src={product.image}
           alt={product.title}
           className="h-full max-h-44 w-auto object-contain transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
+          width={200}
+          height={200}
         />
         <div className="absolute inset-0 bg-zinc-900/0 transition-colors duration-300 group-hover:bg-zinc-900/5 dark:group-hover:bg-white/5" />
       </Link>
