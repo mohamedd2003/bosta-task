@@ -1,6 +1,7 @@
 import { AddProductForm } from "@/components/AddProductForm/ui/AddProductForm"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
+import { Suspense } from "react"
 
 export const metadata = {
     title: "Add New Product | BOSTA",
@@ -29,7 +30,9 @@ export default function AddProductPage() {
 
                 {/* ── Form Section ── */}
                 <div className="flex justify-center">
-                    <AddProductForm />
+                    <Suspense fallback={<div>Loading form...</div>}>
+                        <AddProductForm />
+                    </Suspense>
                 </div>
             </div>
         </div>
