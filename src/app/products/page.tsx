@@ -1,4 +1,4 @@
-import { ProductsHeader } from "@/components/Products/ProductsHeader"
+import { ProductsHeader } from "@/components/ProductCard/ui/ProductsHeader"
 import { ProductListingClient } from "@/components/Home/ui/ProductListingClient"
 import { Suspense } from "react"
 
