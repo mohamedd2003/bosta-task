@@ -30,6 +30,7 @@ export function useProductCard() {
     }, [products])
 
     const searchParams = useSearchParams()
+    console.log(searchParams)
     const initialCategory = searchParams.get("category") || "all"
 
     const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory)

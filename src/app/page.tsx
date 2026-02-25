@@ -13,6 +13,7 @@ export default function HomePage() {
       {/* — static markup, no JS needed */}
       <HeroSection />
 
+      <StatsSection />
       {/*  — interactive: filter, sort, paginate, SWR fetch */}
       <Suspense fallback={<div>Loading Products...</div>}>
         <ProductListingClient />
@@ -21,7 +22,6 @@ export default function HomePage() {
       {/* — static markup, no JS needed */}
       <WhyShopWithUs />
 
-      <StatsSection />
 
       <Testimonials />
     </div>

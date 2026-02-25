@@ -43,20 +43,7 @@ export function HeroSection() {
                  </Link>
                 </div>
 
-                {/* ── Quick Stats ── */}
-                <div className="mt-20 grid grid-cols-2 gap-8 border-t border-zinc-100 pt-12 md:grid-cols-4 dark:border-zinc-900">
-                    {[
-                        { label: "Premium Brands", value: "50+" },
-                        { label: "Happy Customers", value: "10K+" },
-                        { label: "Order Fulfilled", value: "25K+" },
-                        { label: "Quality Support", value: "24/7" },
-                    ].map((stat) => (
-                        <div key={stat.label} className="text-center">
-                            <div className="text-2xl font-black text-zinc-900 dark:text-zinc-50">{stat.value}</div>
-                            <div className="text-xs font-bold uppercase tracking-widest text-zinc-400">{stat.label}</div>
-                        </div>
-                    ))}
-                </div>
+              
             </div>
         </section>
     )
