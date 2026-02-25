@@ -3,6 +3,8 @@
 import { HeroSection } from "@/components/Home/ui/HeroSection"
 import { ProductListingClient } from "@/components/Home/ui/ProductListingClient"
 import { WhyShopWithUs } from "@/components/Home/ui/WhyShopWithUs"
+import { StatsSection } from "@/components/Home/ui/StatsSection"
+import { Testimonials } from "@/components/Home/ui/Testimonials"
 import { Suspense } from "react"
 
 export default function HomePage() {
@@ -18,6 +20,10 @@ export default function HomePage() {
 
       {/* — static markup, no JS needed */}
       <WhyShopWithUs />
+
+      <StatsSection />
+
+      <Testimonials />
     </div>
   )
 }
