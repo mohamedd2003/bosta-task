@@ -9,7 +9,7 @@ export function ProductCardSkeleton() {
     return (
         <Card className="flex h-full flex-col overflow-hidden border-zinc-100 pt-0 dark:border-zinc-800">
             {/* Image skeleton */}
-            <div className="flex aspect-[4/3] items-center justify-center bg-zinc-50 p-6 dark:bg-zinc-900">
+            <div className="flex aspect-4/3 items-center justify-center bg-zinc-50 p-6 dark:bg-zinc-900">
                 <Skeleton className="h-44 w-32 rounded-lg" />
             </div>
 

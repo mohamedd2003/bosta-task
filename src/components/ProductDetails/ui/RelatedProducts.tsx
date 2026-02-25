@@ -1,13 +1,36 @@
-import { getAllProducts } from "../services/ProductCard.service"
-import { ProductCard } from "./ProductCard"
+"use client"
+
+import useSWR from "swr"
+import { getAllProducts } from "../../ProductCard/services/ProductCard.service"
+import { ProductCard } from "../../ProductCard/ui/ProductCard"
+import { ProductCardSkeletonGrid } from "../../ProductCard/ui/ProductCardSkeleton"
 
 interface RelatedProductsProps {
     currentProductId: number
     category: string
 }
 
-export async function RelatedProducts({ currentProductId, category }: RelatedProductsProps) {
-    const allProducts = await getAllProducts()
+export function RelatedProducts({ currentProductId, category }: RelatedProductsProps) {
+    const { data: allProducts, isLoading, error } = useSWR(
+        "all-products",
+        getAllProducts
+    )
+
+    if (isLoading) {
+        return (
+            <section className="mt-20 border-t border-zinc-100 pt-16 dark:border-zinc-800">
+                <div className="mb-8">
+                    <div className="h-8 w-48 animate-pulse rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+                    <div className="mt-2 h-4 w-64 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-900" />
+                </div>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <ProductCardSkeletonGrid count={4} />
+                </div>
+            </section>
+        )
+    }
+
+    if (error || !allProducts) return null
 
     // Filter by category and exclude current product
     const related = allProducts

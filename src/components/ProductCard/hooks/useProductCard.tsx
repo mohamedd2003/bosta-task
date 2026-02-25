@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import useSWR from "swr"
 import { getAllProducts } from "../services/ProductCard.service"
 import { ProductCard } from "../types/ProductCard.types"
@@ -26,7 +27,20 @@ export function useProductCard() {
         return unique.sort()
     }, [products])
 
-    const [selectedCategory, setSelectedCategory] = useState<string>("all")
+    const searchParams = useSearchParams()
+    const initialCategory = searchParams.get("category") || "all"
+
+    const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory)
+
+    // Update category when URL changes
+    useEffect(() => {
+        const cat = searchParams.get("category")
+        if (cat) {
+            setSelectedCategory(cat)
+        } else {
+            setSelectedCategory("all")
+        }
+    }, [searchParams])
 
     // ---------- Pagination ----------
     const [currentPage, setCurrentPage] = useState(1)

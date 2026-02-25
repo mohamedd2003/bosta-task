@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
 import { useCartStore } from "@/store/useCartStore"
-import { ProductCard } from "../types/ProductCard.types"
+import { ProductCard } from "../../ProductCard/types/ProductCard.types"
 import { toast } from "react-hot-toast"
 
 interface ProductActionsProps {
@@ -58,31 +58,7 @@ export function ProductActions({ product }: ProductActionsProps) {
                 )}
             </Button>
 
-            {/* Wishlist */}
-            <Button
-                size="lg"
-                variant="outline"
-                onClick={() => setIsWishlisted(!isWishlisted)}
-                aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-                className={`rounded-xl transition-all ${isWishlisted
-                    ? "border-red-300 bg-red-50 text-red-500 hover:border-red-400 hover:bg-red-100 dark:border-red-700 dark:bg-red-950/30 dark:hover:bg-red-950/50"
-                    : "border-zinc-200 hover:border-primary hover:text-primary dark:border-zinc-700"
-                    }`}
-            >
-                <svg
-                    className="h-5 w-5 transition-transform hover:scale-110"
-                    viewBox="0 0 24 24"
-                    fill={isWishlisted ? "currentColor" : "none"}
-                    stroke="currentColor"
-                    strokeWidth={isWishlisted ? 0 : 1.5}
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                    />
-                </svg>
-            </Button>
+
         </div>
     )
 }

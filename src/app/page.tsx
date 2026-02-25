@@ -3,6 +3,7 @@
 import { HeroSection } from "@/components/Home/ui/HeroSection"
 import { ProductListingClient } from "@/components/Home/ui/ProductListingClient"
 import { WhyShopWithUs } from "@/components/Home/ui/WhyShopWithUs"
+import { Suspense } from "react"
 
 export default function HomePage() {
   return (
@@ -11,7 +12,9 @@ export default function HomePage() {
       <HeroSection />
 
       {/*  — interactive: filter, sort, paginate, SWR fetch */}
-      <ProductListingClient />
+      <Suspense fallback={<div>Loading Products...</div>}>
+        <ProductListingClient />
+      </Suspense>
 
       {/* — static markup, no JS needed */}
       <WhyShopWithUs />
