@@ -1,3 +1,4 @@
+"use client"
 import { SortOption } from "@/components/ProductCard/hooks/useProductCard"
 
 interface ProductToolbarProps {
