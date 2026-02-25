@@ -91,12 +91,7 @@ export default function Navbar() {
 
                 {/* ── Actions ── */}
                 <div className="flex items-center gap-2 sm:gap-4">
-                    <button
-                        className="flex h-10 w-10 items-center justify-center rounded-full text-zinc-500 transition-all hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
-                        aria-label="Search"
-                    >
-                        <Search className="h-5 w-5" />
-                    </button>
+               
 
                     <Link
                         href="/products"
