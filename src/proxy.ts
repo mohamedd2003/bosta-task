@@ -4,8 +4,10 @@ import type { NextRequest } from 'next/server'
 export function proxy(request: NextRequest) {
     const token = request.cookies.get('token')?.value
 
-    // If trying to access Add Product page without a token
-    if (request.nextUrl.pathname === '/products/new-product' && !token) {
+    const protectedPaths = ['/products/new-product', '/cart']
+
+    // If trying to access a protected page without a token
+    if (protectedPaths.includes(request.nextUrl.pathname) && !token) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
@@ -14,5 +16,5 @@ export function proxy(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: ['/products/new-product'],
+    matcher: ['/products/new-product', '/cart'],
 }

@@ -18,7 +18,7 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const [mounted, setMounted] = useState(false)
     const [userName, setUserName] = useState<string | null>(null)
-    const { getTotalItems } = useCartStore()
+    const items = useCartStore((state) => state.items)
 
     useEffect(() => {
         setMounted(true)
@@ -46,7 +46,7 @@ export default function Navbar() {
         window.location.reload()
     }
 
-    const cartCount = mounted ? getTotalItems() : 0
+    const cartCount = mounted ? items.reduce((total, item) => total + item.quantity, 0) : 0
 
     return (
         <nav
@@ -91,10 +91,10 @@ export default function Navbar() {
 
                 {/* ── Actions ── */}
                 <div className="flex items-center gap-2 sm:gap-4">
-               
+
 
                     <Link
-                        href="/products"
+                        href="/cart"
                         className="group relative flex h-10 items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 text-sm font-bold text-zinc-700 shadow-xs transition-all hover:border-primary hover:text-primary dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300"
                     >
                         <div className="relative">
