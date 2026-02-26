@@ -21,7 +21,7 @@ export function ProductsHeader() {
 
             {isLoggedIn && (
                 <Link
-                    href="/products/add"
+                    href="/products/new-product"
                     className="bg-primary flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-red-500/25 transition-all hover:-translate-y-0.5"
                 >
                     <span>Add Product</span>

@@ -46,7 +46,7 @@ export function ProductGrid({
                 {/* ── Add Product Placeholder ── */}
                 {isLoggedIn && currentPage === 1 && (
                     <Link
-                        href="/products/add"
+                        href="/products/new-product"
                         className="group flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-zinc-200 bg-white/50 p-6 transition-all hover:border-primary/50 hover:bg-primary/[0.02] dark:border-zinc-800 dark:bg-zinc-950/50 dark:hover:border-primary/30"
                     >
                         <div className="bg-primary/10 flex h-16 w-16 items-center justify-center rounded-full transition-transform group-hover:scale-110">
