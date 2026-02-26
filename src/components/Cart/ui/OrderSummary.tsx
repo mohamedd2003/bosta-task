@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 interface OrderSummaryProps {
     totalItems: number
@@ -76,13 +75,6 @@ export function OrderSummary({ totalItems, totalPrice }: OrderSummaryProps) {
                         ${finalTotal.toFixed(2)}
                     </span>
                 </div>
-
-                <Button
-                    size="lg"
-                    className="w-full rounded-xl bg-primary py-6 text-base font-bold text-white shadow-lg shadow-red-500/25 transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-xl active:translate-y-0"
-                >
-                    Proceed to Checkout
-                </Button>
 
                 <Link
                     href="/"

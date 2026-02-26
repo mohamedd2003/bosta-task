@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
 
-const inter = Inter({
-  variable: "--font-inter",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
@@ -50,12 +50,7 @@ export const metadata: Metadata = {
     description:
       "Discover top-quality products at great prices. Free shipping on orders over $50.",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "BOSTA — Premium E-Commerce",
-    description:
-      "Discover top-quality products at great prices. Free shipping on orders over $50.",
-  },
+
 };
 
 export default function RootLayout({
@@ -65,7 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${outfit.variable} font-sans antialiased`}>
         <Navbar />
         <main className="min-h-[calc(100vh-4rem)]">{children}</main>
         <Footer />
