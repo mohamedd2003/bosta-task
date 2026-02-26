@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card"
 import { ProductCard as ProductCardType } from "../types/ProductCard.types"
 import Image from "next/image"
+import { useCartStore } from "@/store/useCartStore"
+import { toast } from "react-hot-toast"
 
 // ── Dynamic category color: hash-based, no static data ──
 const colorPalette = [
@@ -36,7 +38,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [isLiked, setIsLiked] = useState(false)
+  const [addedToCart, setAddedToCart] = useState(false)
+  const { addItem } = useCartStore()
   const color = getCategoryColor(product.category)
 
   return (
@@ -57,21 +60,33 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="absolute inset-0 bg-zinc-900/0 transition-colors duration-300 group-hover:bg-zinc-900/5 dark:group-hover:bg-white/5" />
       </Link>
 
-      {/* ── Wishlist Heart ── */}
+      {/* ── Add to Cart Heart ── */}
       <button
-        onClick={() => setIsLiked(!isLiked)}
-        className={`absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white/90 shadow-sm backdrop-blur-sm transition-all hover:scale-110 ${isLiked
-          ? "border-red-200 text-red-500"
-          : "border-zinc-200 text-zinc-400 hover:border-red-200 hover:text-red-400"
+        onClick={() => {
+          addItem(product)
+          setAddedToCart(true)
+          toast.success(`Added to cart!`, {
+            position: "bottom-center",
+            style: {
+              borderRadius: '12px',
+              background: '#333',
+              color: '#fff',
+            },
+          })
+          setTimeout(() => setAddedToCart(false), 1500)
+        }}
+        className={`absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white/90 shadow-sm backdrop-blur-sm transition-all hover:scale-110 ${addedToCart
+            ? "border-red-200 text-red-500"
+            : "border-zinc-200 text-zinc-400 hover:border-red-200 hover:text-red-400"
           } dark:bg-zinc-900/90 dark:border-zinc-700`}
-        aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
+        aria-label="Add to cart"
       >
         <svg
-          className="h-4 w-4 transition-transform"
+          className={`h-4 w-4 transition-transform ${addedToCart ? "scale-110" : ""}`}
           viewBox="0 0 24 24"
-          fill={isLiked ? "currentColor" : "none"}
+          fill={addedToCart ? "currentColor" : "none"}
           stroke="currentColor"
-          strokeWidth={isLiked ? 0 : 1.5}
+          strokeWidth={addedToCart ? 0 : 1.5}
         >
           <path
             strokeLinecap="round"

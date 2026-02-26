@@ -11,9 +11,51 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "BOSTA — Premium E-Commerce",
+  metadataBase: new URL("https://bosta-task-rust.vercel.app"),
+  title: {
+    default: "BOSTA — Premium E-Commerce",
+    template: "%s | BOSTA",
+  },
   description:
-    "Discover top-quality products at great prices. Free shipping on orders over $50.",
+    "Discover top-quality products at great prices. Free shipping on orders over $50. Shop electronics, fashion, jewelry & more.",
+  keywords: [
+    "BOSTA",
+    "e-commerce",
+    "online shopping",
+    "premium products",
+    "free shipping",
+    "electronics",
+    "fashion",
+    "jewelry",
+  ],
+  authors: [{ name: "BOSTA" }],
+  creator: "BOSTA",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://bosta-task-rust.vercel.app",
+    siteName: "BOSTA",
+    title: "BOSTA — Premium E-Commerce",
+    description:
+      "Discover top-quality products at great prices. Free shipping on orders over $50.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BOSTA — Premium E-Commerce",
+    description:
+      "Discover top-quality products at great prices. Free shipping on orders over $50.",
+  },
 };
 
 export default function RootLayout({
