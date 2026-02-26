@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
@@ -19,16 +18,14 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { productSchema, ProductFormValues } from "@/components/ProductCard/validation/ProductCard.validation"
-import { useProductCard } from "@/components/ProductCard/hooks/useProductCard"
-import { toast } from "react-hot-toast"
+import { productSchema, ProductFormValues } from "@/components/AddProductForm/validation/AddProductForm.validation"
+import { useAddProductForm } from "../hooks/useAddProductForm"
 import { Loader2, Plus } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 
 export function AddProductForm() {
     const router = useRouter()
-    const { handleAddProduct } = useProductCard()
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const { handleAddProduct, isSubmitting } = useAddProductForm()
 
     const {
         register,
@@ -48,9 +45,8 @@ export function AddProductForm() {
 
 
     const onSubmit = async (data: ProductFormValues) => {
-        setIsSubmitting(true)
         try {
-            // Mapping form values to ProductDto (which happens to be the same here)
+            // Mapping form values to ProductDto
             await handleAddProduct({
                 ...data,
                 id: 0, // ID is usually handled by the server for NEW products
@@ -58,8 +54,6 @@ export function AddProductForm() {
             router.push("/products")
         } catch (error) {
             // Error handling is inside handleAddProduct but we catch here to stop navigation
-        } finally {
-            setIsSubmitting(false)
         }
     }
 
