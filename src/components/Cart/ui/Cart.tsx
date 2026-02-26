@@ -10,7 +10,8 @@ import { CartItemCard } from "./CartItemCard"
 import { OrderSummary } from "./OrderSummary"
 
 export default function Cart() {
-    const { items, clearCart, getTotalPrice, getTotalItems } = useCartStore()
+    const items = useCartStore((state) => state.items)
+    const clearCart = useCartStore((state) => state.clearCart)
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
@@ -21,8 +22,8 @@ export default function Cart() {
 
     if (items.length === 0) return <EmptyCart />
 
-    const totalPrice = getTotalPrice()
-    const totalItems = getTotalItems()
+    const totalItems = items.reduce((total, item) => total + item.quantity, 0)
+    const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0)
 
     return (
         <div className="min-h-[60vh] bg-zinc-50/50 dark:bg-zinc-950">
