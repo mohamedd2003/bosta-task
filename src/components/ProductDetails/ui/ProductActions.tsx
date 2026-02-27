@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 
 import { useCartStore } from "@/store/useCartStore"
@@ -14,20 +14,40 @@ interface ProductActionsProps {
 export function ProductActions({ product }: ProductActionsProps) {
     const [isWishlisted, setIsWishlisted] = useState(false)
     const [addedToCart, setAddedToCart] = useState(false)
-    const { addItem } = useCartStore()
+    const { addItem, removeItem, items } = useCartStore()
+    const [isMounted, setIsMounted] = useState(false)
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    const isAdded = (isMounted && items.some(item => item.id === product.id)) || addedToCart
 
     const handleAddToCart = () => {
-        addItem(product)
-        setAddedToCart(true)
-        toast.success(`${product.title} added to cart!`, {
-            position: "top-center",
-            style: {
-                borderRadius: '12px',
-                background: '#333',
-                color: '#fff',
-            },
-        })
-        setTimeout(() => setAddedToCart(false), 2000)
+        if (isAdded) {
+            removeItem(product.id)
+            setAddedToCart(false)
+            toast.success(`${product.title} removed from cart!`, {
+                position: "top-center",
+                style: {
+                    borderRadius: '12px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            })
+        } else {
+            addItem(product)
+            setAddedToCart(true)
+            toast.success(`${product.title} added to cart!`, {
+                position: "top-center",
+                style: {
+                    borderRadius: '12px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            })
+            setTimeout(() => setAddedToCart(false), 2000)
+        }
     }
 
     return (
@@ -36,17 +56,17 @@ export function ProductActions({ product }: ProductActionsProps) {
             <Button
                 size="lg"
                 onClick={handleAddToCart}
-                className={`flex-1 rounded-xl text-white shadow-sm transition-all hover:shadow-md ${addedToCart
+                className={`flex-1 rounded-xl text-white shadow-sm transition-all hover:shadow-md ${isAdded
                     ? "bg-emerald-600 hover:bg-emerald-700"
                     : "bg-primary hover:bg-primary/90"
                     }`}
             >
-                {addedToCart ? (
+                {isAdded ? (
                     <>
                         <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
-                        Added!
+                        Remove from Cart
                     </>
                 ) : (
                     <>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -13,6 +13,7 @@ import { ProductCard as ProductCardType } from "../types/ProductCard.types"
 import Image from "next/image"
 import { useCartStore } from "@/store/useCartStore"
 import { toast } from "react-hot-toast"
+import { ShoppingCart, Check } from "lucide-react"
 
 // ── Dynamic category color: hash-based, no static data ──
 const colorPalette = [
@@ -39,8 +40,15 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [addedToCart, setAddedToCart] = useState(false)
-  const { addItem } = useCartStore()
+  const { addItem, removeItem, items } = useCartStore()
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
   const color = getCategoryColor(product.category)
+  const isAdded = (isMounted && items.some(item => item.id === product.id)) || addedToCart
 
   return (
     <Card className="group relative flex h-full flex-col overflow-hidden border-zinc-100 pt-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-zinc-200/50 dark:border-zinc-800 dark:hover:shadow-zinc-900/50">
@@ -60,41 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="absolute inset-0 bg-zinc-900/0 transition-colors duration-300 group-hover:bg-zinc-900/5 dark:group-hover:bg-white/5" />
       </Link>
 
-      {/* ── Add to Cart Heart ── */}
-      <button
-        onClick={() => {
-          addItem(product)
-          setAddedToCart(true)
-          toast.success(`Added to cart!`, {
-            position: "top-center",
-            style: {
-              borderRadius: '12px',
-              background: '#333',
-              color: '#fff',
-            },
-          })
-          setTimeout(() => setAddedToCart(false), 1500)
-        }}
-        className={`absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white/90 shadow-sm backdrop-blur-sm transition-all hover:scale-110 ${addedToCart
-          ? "border-red-200 text-red-500"
-          : "border-zinc-200 text-zinc-400 hover:border-red-200 hover:text-red-400"
-          } dark:bg-zinc-900/90 dark:border-zinc-700`}
-        aria-label="Add to cart"
-      >
-        <svg
-          className={`h-4 w-4 transition-transform ${addedToCart ? "scale-110" : ""}`}
-          viewBox="0 0 24 24"
-          fill={addedToCart ? "currentColor" : "none"}
-          stroke="currentColor"
-          strokeWidth={addedToCart ? 0 : 1.5}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-          />
-        </svg>
-      </button>
+
 
       {/* ── Content ── */}
       <CardHeader className="flex-1 gap-3">
@@ -142,13 +116,53 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardHeader>
 
       {/* ── Footer ── */}
-      <CardFooter className="pt-0">
+      <CardFooter className="flex gap-2 pt-0">
         <Button
           variant="outline"
-          className="w-full rounded-lg border-zinc-200 font-medium transition-all hover:border-primary hover:bg-primary hover:text-white dark:border-zinc-700 dark:hover:border-primary dark:hover:bg-primary dark:hover:text-white"
+          className="flex-1 rounded-lg border-zinc-200 font-medium transition-all hover:border-primary hover:bg-primary hover:text-white dark:border-zinc-700 dark:hover:border-primary dark:hover:bg-primary dark:hover:text-white"
           asChild
         >
           <Link href={`/products/${product.id}`}>View Details</Link>
+        </Button>
+        <Button
+          onClick={(e) => {
+            e.preventDefault()
+            if (isAdded) {
+              removeItem(product.id)
+              setAddedToCart(false)
+              toast.success(`Removed from cart!`, {
+                position: "top-center",
+                style: {
+                  borderRadius: '12px',
+                  background: '#333',
+                  color: '#fff',
+                },
+              })
+            } else {
+              addItem(product)
+              setAddedToCart(true)
+              toast.success(`Added to cart!`, {
+                position: "top-center",
+                style: {
+                  borderRadius: '12px',
+                  background: '#333',
+                  color: '#fff',
+                },
+              })
+              setTimeout(() => setAddedToCart(false), 1500)
+            }
+          }}
+          className={`px-3 rounded-lg transition-all ${isAdded
+            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+            : "bg-primary hover:bg-primary/90 text-white"
+            }`}
+          aria-label="Add to cart"
+        >
+          {isAdded ? (
+            <Check className="h-4 w-4" />
+          ) : (
+            <ShoppingCart className="h-4 w-4" />
+          )}
         </Button>
       </CardFooter>
     </Card>

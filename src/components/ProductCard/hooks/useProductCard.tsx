@@ -8,9 +8,9 @@ import { ProductCard } from "../types/ProductCard.types"
 
 export type SortOption = "default" | "price-asc" | "price-desc" | "category"
 
-const PRODUCTS_PER_PAGE = 10
+const PRODUCTS_PER_PAGE = 8
 
-export function useProductCard() {
+export function useProductCard(isHomePage: boolean = false) {
     // ---------- Data fetching ----------
     const { data: products, error, isLoading } = useSWR<ProductCard[]>(
         "products",
@@ -75,15 +75,18 @@ export function useProductCard() {
     }, [products, sortBy, selectedCategory])
 
     // ---------- Paginated slice ----------
-    const totalPages = Math.max(1, Math.ceil(processedProducts.length / PRODUCTS_PER_PAGE))
+    const PRODUCTS_PER_PAGE = isHomePage ? 8 : (processedProducts.length || 10)
+    const totalPages = isHomePage ? 1 : Math.max(1, Math.ceil(processedProducts.length / PRODUCTS_PER_PAGE))
 
     // Reset to page 1 when filters/sort change
     const safeCurrentPage = currentPage > totalPages ? 1 : currentPage
 
     const paginatedProducts = useMemo(() => {
-        const start = (safeCurrentPage - 1) * PRODUCTS_PER_PAGE
-        return processedProducts.slice(start, start + PRODUCTS_PER_PAGE)
-    }, [processedProducts, safeCurrentPage])
+        if (isHomePage) {
+            return processedProducts.slice(0, 8)
+        }
+        return processedProducts
+    }, [processedProducts, isHomePage])
 
     // ---------- Actions ----------
     const handleSortChange = useCallback((option: SortOption) => {

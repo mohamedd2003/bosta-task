@@ -16,7 +16,7 @@ export default function HomePage() {
       <StatsSection />
       {/*  — interactive: filter, sort, paginate, SWR fetch */}
       <Suspense fallback={<div>Loading Products...</div>}>
-        <ProductListingClient />
+        <ProductListingClient isHomePage={true} />
       </Suspense>
 
       {/* — static markup, no JS needed */}

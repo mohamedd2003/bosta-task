@@ -7,7 +7,11 @@ import { ProductGrid } from "@/components/Home/ui/ProductGrid"
 import { Pagination } from "@/components/Home/ui/Pagination"
 import { ErrorState, EmptyState } from "@/components/Home/ui/StatesFeedback"
 
-export function ProductListingClient() {
+interface ProductListingProps {
+    isHomePage?: boolean
+}
+
+export function ProductListingClient({ isHomePage = false }: ProductListingProps) {
     const {
         products,
         allProductsCount,
@@ -23,7 +27,7 @@ export function ProductListingClient() {
         totalPages,
         goToPage,
         productsPerPage,
-    } = useProductCard()
+    } = useProductCard(isHomePage)
 
     return (
         <section id="products" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -61,11 +65,13 @@ export function ProductListingClient() {
                         productsPerPage={productsPerPage}
                         allProductsCount={allProductsCount}
                     />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={goToPage}
-                    />
+                    {totalPages > 1 && (
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={goToPage}
+                        />
+                    )}
                 </>
             ) : null}
         </section>
