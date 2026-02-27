@@ -20,7 +20,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         addItem(product)
         setAddedToCart(true)
         toast.success(`${product.title} added to cart!`, {
-            position: "bottom-center",
+            position: "top-center",
             style: {
                 borderRadius: '12px',
                 background: '#333',
