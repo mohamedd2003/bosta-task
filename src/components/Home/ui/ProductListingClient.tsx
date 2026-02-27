@@ -45,17 +45,15 @@ export function ProductListingClient() {
                 onSortChange={handleSortChange}
             />
 
-            {error && <ErrorState />}
-
-            {isLoading && (
+            {error ? (
+                <ErrorState />
+            ) : isLoading ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     <ProductCardSkeletonGrid count={8} />
                 </div>
-            )}
-
-            {isEmpty && <EmptyState />}
-
-            {!isLoading && !error && products.length > 0 && (
+            ) : isEmpty ? (
+                <EmptyState />
+            ) : products.length > 0 ? (
                 <>
                     <ProductGrid
                         products={products}
@@ -69,7 +67,7 @@ export function ProductListingClient() {
                         onPageChange={goToPage}
                     />
                 </>
-            )}
+            ) : null}
         </section>
     )
 }

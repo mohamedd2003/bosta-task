@@ -4,7 +4,7 @@ import { ProductCard } from "../types/ProductCard.types";
 
 export const getAllProducts = async (): Promise<ProductCard[]> => {
     try {
-        const { data } = await apiClient.get<ProductCard[]>('/products');
+        const { data } = await apiClient.get<ProductCard[]>('/prodducts');
         return handleResponse(data as ProductCard[]);
     } catch (error) {
         return handleErr(error, "fetching products");

@@ -43,7 +43,7 @@ export default function Cart() {
                         onClick={() => {
                             clearCart()
                             toast.success("Cart cleared", {
-                                position: "bottom-center",
+                                position: "top-center",
                                 style: {
                                     borderRadius: '12px',
                                     background: '#333',

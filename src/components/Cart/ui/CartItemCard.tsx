@@ -23,7 +23,7 @@ export function CartItemCard({ item }: CartItemCardProps) {
     const handleRemove = () => {
         removeItem(item.id)
         toast.success("Removed from cart", {
-            position: "bottom-center",
+            position: "top-center",
             style: {
                 borderRadius: '12px',
                 background: '#333',

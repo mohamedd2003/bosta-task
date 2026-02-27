@@ -66,7 +66,7 @@ export function ProductCard({ product }: ProductCardProps) {
           addItem(product)
           setAddedToCart(true)
           toast.success(`Added to cart!`, {
-            position: "bottom-center",
+            position: "top-center",
             style: {
               borderRadius: '12px',
               background: '#333',
@@ -76,8 +76,8 @@ export function ProductCard({ product }: ProductCardProps) {
           setTimeout(() => setAddedToCart(false), 1500)
         }}
         className={`absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white/90 shadow-sm backdrop-blur-sm transition-all hover:scale-110 ${addedToCart
-            ? "border-red-200 text-red-500"
-            : "border-zinc-200 text-zinc-400 hover:border-red-200 hover:text-red-400"
+          ? "border-red-200 text-red-500"
+          : "border-zinc-200 text-zinc-400 hover:border-red-200 hover:text-red-400"
           } dark:bg-zinc-900/90 dark:border-zinc-700`}
         aria-label="Add to cart"
       >
