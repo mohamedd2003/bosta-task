@@ -4,7 +4,8 @@ import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
-
+import img from "@/assets/download.png"
+import Image from "next/image";
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -62,6 +63,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${outfit.variable}  font-sans antialiased`}>
         <Navbar />
+        <Image src={img} width={200} height={200} alt="logo">
+
+        </Image>
         <main className="min-h-[calc(100vh-4rem)]">{children}</main>
         <Footer />
         <Toaster position="top-center" />
