@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <div className="bg-zinc-50/50 dark:bg-zinc-950">
       {/* — static markup, no JS needed */}
-      {/* — static markup, no JS needed */}
+      {/* — eDITSSSSSS */}
       <HeroSection />
 
       <StatsSection />
