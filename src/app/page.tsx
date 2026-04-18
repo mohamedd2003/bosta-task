@@ -12,6 +12,7 @@ export default function HomePage() {
     <div className="bg-zinc-50/50 dark:bg-zinc-950">
       {/* — static markup, no JS needed */}
       <HeroSection />
+      {/* — static markup, no JS needed */}
 
       <StatsSection />
       {/*  — interactive: filter, sort, paginate, SWR fetch */}
