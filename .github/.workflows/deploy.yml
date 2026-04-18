@@ -22,15 +22,9 @@ jobs:
           username: root                # بما إنك شغال root
           key: ${{ secrets.SSH_KEY }}    # المفتاح اللي لسه حاطينه
           script: |
-            cd /root/bosta-task  # <--- استبدل ده بالمسار الحقيقي لمشروعك على السيرفر
+            cd /root/bosta-task
             git pull origin main
-            
-            # لو المشروع FastAPI (Backend):
-            # source venv/bin/activate
-            # pip install -r requirements.txt
-            # pm2 restart all
-            
-            # لو المشروع React/Next.js (Frontend):
             npm install
             npm run build
-            pm2 restart all
+            # هنا بنرستر المشروع بالإسم اللي ظاهر عندك في pm2
+            pm2 restart bosta-task || pm2 start npm --name "bosta-task" -- start
