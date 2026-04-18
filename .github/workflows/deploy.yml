@@ -22,9 +22,13 @@ jobs:
           username: root                # بما إنك شغال root
           key: ${{ secrets.SSH_KEY }}    # المفتاح اللي لسه حاطينه
           script: |
+            # تحميل إعدادات NVM عشان npm يشتغل
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
             cd /root/bosta-task
             git pull origin main
             npm install
             npm run build
-            # هنا بنرستر المشروع بالإسم اللي ظاهر عندك في pm2
-            pm2 restart bosta-task || pm2 start npm --name "bosta-task" -- start
+            # ريستارت للمشروع
+            pm2 restart bosta-task || pm2 start npm --name "bosta-task" -- start -- -p 3000
