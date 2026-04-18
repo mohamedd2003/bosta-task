@@ -31,6 +31,6 @@ jobs:
             # pm2 restart all
             
             # لو المشروع React/Next.js (Frontend):
-            # npm install
-            # npm run build
-            # pm2 restart all
+            npm install
+            npm run build
+            pm2 restart all
