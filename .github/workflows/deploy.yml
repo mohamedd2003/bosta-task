@@ -1,0 +1,30 @@
+name: Auto Deploy to Hetzner
+
+# 1. امتى الـ Action يشتغل؟
+on:
+  push:
+    branches:
+      - main  # هيشتغل أول ما تعمل push لفرع main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 2. خطوة سحب الكود من GitHub للـ Runner
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 3. خطوة الدخول على سيرفر Hetzner وتنفيذ الأوامر
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}      # الأي بي اللي حطيته في الـ Secrets
+          username: root                # بما إنك شغال root
+          key: ${{ secrets.SSH_KEY }}    # المفتاح اللي لسه حاطينه
+          script: |
+            cd /root/bosta-task
+            git pull origin main
+            npm install
+            npm run build
+            # هنا بنرستر المشروع بالإسم اللي ظاهر عندك في pm2
+            pm2 restart bosta-task || pm2 start npm --name "bosta-task" -- start
