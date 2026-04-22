@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  frontend:
+    build: .
+    ports:
+      - "80:3000" # بنربط بورت 80 في السيرفر ببورت 3000 جوه الكونتينر
+    restart: always
+    environment:
+      - NODE_ENV=production
